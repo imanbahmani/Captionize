@@ -1,0 +1,59 @@
+Installation
+
+pip install flask openai faster-whisper torch
+
+# For WhisperX (better accuracy, optional)
+pip install whisperx
+
+# Persian font (Ubuntu/Debian)
+sudo apt-get install fonts-vazirmatn
+
+# FFmpeg (required)
+sudo apt-get install ffmpeg
+
+Components
+1. bahmanPi.py - Subtitle Generator
+Generates karaoke-style ASS subtitles from video/audio with word-level timestamps.
+Basic usage:
+bashpython bahmanPi.py --in video.mp4 --ass output.ass
+
+
+2. editor.py - Web Editor
+Flask web app for editing ASS subtitles with GPT correction and hardsub features.
+Run:
+python editor.py
+# Open: http://localhost:5000
+
+GPT Setup:
+Replace the API key in editor.py:
+pythonOPENAI_API_KEY = "your-key-here"
+
+3. burn_video.py - Video Hardsubber
+Standalone script to burn ASS subtitles into video.
+Usage:
+bashpython burn_video.py --video input.mp4 --ass subs.ass --quality medium
+Quality presets:
+
+high - CRF 18 (best quality, large file)
+medium - CRF 23 (balanced, default)
+low - CRF 28 (small file)
+instagram - 5Mbps bitrate (social media)
+
+Workflow Example
+bash# 1. Generate subtitles
+python bahmani.py --in video.mp4 --ass subs.ass
+
+# 2. Edit in browser
+python ass_editor.py
+# Upload subs.ass, edit, use GPT correction, export
+
+# 3. Burn to video
+python burn_video.py --video video.mp4 --ass edited_subs.ass --quality instagram
+Or just use the editor to burn the subtitle to video
+
+
+FFmpeg path in burn_video.py may need adjustment for your system
+
+Troubleshooting
+Hardsub not working:
+Check FFmpeg path in burn_video.py line 81
